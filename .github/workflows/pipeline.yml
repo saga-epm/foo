@@ -50,4 +50,7 @@ jobs:
         id: apply  
         run: | 
           terraform apply tfplan      
-          echo "output" $(terraform output outputdummy)
+          echo "KEY=$(terraform output outputdummy)" >>$GITHUB_OUTPUT
+          echo "--------------------"
+          echo "Key: $KEY"
+          
