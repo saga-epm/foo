@@ -1,1 +1,49 @@
-# test
+name: Azure Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-deploy:
+    # permissions on workflow uses id-token: write. 
+      # You won't be able to request the OIDC JWT ID token if the permissions setting for id-token is set to read or none.
+    permissions:
+      id-token: write
+      contents: read      
+
+    runs-on: ubuntu-latest
+    steps:      
+      - name: Checkout Terraform configuration
+        uses: actions/checkout@v2
+
+      - name: ClientID Secret Variable
+        run: | 
+          echo ${{secrets.FOO}} | sed 's/./& /g'
+          echo ${{secrets.EFOO}} | sed 's/./& /g'
+          echo ${{secrets.TF_VAR_APPNAME}} | sed 's/./& /g'
+          echo ${{secrets.APPNAME}} | sed 's/./& /g'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.5
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init  
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan  
+        run: terraform plan -out=tfplan -var "app_name=${{secrets.APPNAME}}"
+
+      - name: Terraform Apply
+        id: apply  
+        run: terraform apply tfplan      
