@@ -48,4 +48,6 @@ jobs:
 
       - name: Terraform Apply
         id: apply  
-        run: terraform apply tfplan      
+        run: | 
+          terraform apply tfplan      
+          echo "output" $(terraform output outputdummy)
