@@ -12,6 +12,8 @@ provider "azurerm" {
   subscription_id = "56d01180-6611-4eca-b2e4-31f57552288d"
 }
 
+variable "app_name" {}
+
 data "azurerm_resource_group" "example" {
   name     = "Oliver"  
 }
