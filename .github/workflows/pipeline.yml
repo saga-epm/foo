@@ -9,14 +9,15 @@ on:
 jobs:
   build-and-deploy:
     # permissions on workflow uses id-token: write. 
-      # You won't be able to request the OIDC JWT ID token if the permissions setting for id-token is set to read or none.
+    # You won't be able to request the OIDC JWT ID token if the permissions setting for id-token is set to read or none.
+    runs-on: ubuntu-latest
+    
     permissions:
       id-token: write
       contents: write
       pull-requests: write
       repository-projects: write
 
-    runs-on: ubuntu-latest      
     steps:      
       - name: Checkout Terraform configuration
         uses: actions/checkout@v2
@@ -31,7 +32,7 @@ jobs:
       - run: |
           gh variable list
           gh variable set TEST_VAR --body "Set from workflow"
-          gh variable list
+          gh variable list        
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
