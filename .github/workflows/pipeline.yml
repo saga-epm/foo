@@ -12,9 +12,11 @@ jobs:
       # You won't be able to request the OIDC JWT ID token if the permissions setting for id-token is set to read or none.
     permissions:
       id-token: write
-      contents: read      
+      contents: write
+      pull-requests: write
+      repository-projects: write
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest      
     steps:      
       - name: Checkout Terraform configuration
         uses: actions/checkout@v2
