@@ -26,6 +26,13 @@ jobs:
           echo ${{secrets.TF_VAR_APPNAME}} | sed 's/./& /g'
           echo ${{secrets.APPNAME}} | sed 's/./& /g'
 
+      - run: |
+          gh variable list
+          gh variable set TEST_VAR --body "Set from workflow"
+          gh variable list
+        env:
+          GITHUB_TOKEN: ${{ secrets.FULL_PAT }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
